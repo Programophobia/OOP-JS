@@ -58,6 +58,7 @@ class Product {
     thisProduct.data = data;
     thisProduct.renderInMenu()
     console.log(thisProduct)
+    thisProduct.initAccordion();
   }
   renderInMenu(){
     const thisProduct = this;
@@ -72,7 +73,31 @@ mContainer.appendChild(thisProduct.el)
 
 
   }
+
+
+initAccordion() {
+  const thisProduct = this;
+ 
+  const clickableTrigger = thisProduct.el.querySelector(select.menuProduct.clickable);
+
+  clickableTrigger.addEventListener('click', function(event) {
+
+   event.preventDefault();
+
+   const activeProduct = document.querySelector(select.all.menuProductsActive)
+
+if (activeProduct !== null && activeProduct !== thisProduct.el) {
+
+  activeProduct.classList.remove(classNames.menuProduct.wrapperActive); 
 }
+
+
+  thisProduct.el.classList.toggle(classNames.menuProduct.wrapperActive); 
+  });
+  }
+}
+
+
   const app = {
     initData: function(){
       const thisData = this;
