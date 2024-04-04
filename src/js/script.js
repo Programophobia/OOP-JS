@@ -184,8 +184,10 @@ initAccordion() {
     initMenu: function(){
       const thisApp = this;
       console.log(thisApp.data)
+      
      for(let productData in thisApp.data.products){
       new Product(productData, thisApp.data.products[productData])
+      console.log(thisApp.data.products[productData])
      }
     },
     init: function(){
