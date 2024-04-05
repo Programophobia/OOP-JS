@@ -51,6 +51,8 @@ const select = {
   const templates = {
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
+
+
 class Product {
   constructor(id, data){
     const thisProduct = this;
@@ -64,8 +66,9 @@ class Product {
     thisProduct.initAmountWidget();
     thisProduct.processOrder();
   }
+
   renderInMenu(){
-        const thisProduct = this;
+    const thisProduct = this;
     const genaratedHTML = templates.menuProduct(thisProduct.data)
     thisProduct.el = utils.createDOMFromHTML(genaratedHTML)
     console.log(genaratedHTML)
@@ -186,11 +189,50 @@ initAccordion() {
 class AmountWidget{
   constructor(element){
     const thisWidget = this;
+    thisWidget.getElements(element);
+    thisWidget.setValue(thisWidget.input.value)
+    thisWidget.initCount()
     console.log(thisWidget);
     console.log(element)
   }
-}
 
+  getElements(element){
+    const thisWidget = this;
+  
+    thisWidget.element = element;
+    thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+    thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+    thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+  }
+
+  setValue(value){
+const thisWidget = this;
+const  newValue = parseInt(value)
+/* TODO: Add validation */
+if(thisWidget.value !== newValue && !isNaN(newValue)) {
+  thisWidget.value = newValue;
+}
+if(newValue == isNaN || newValue > 9){
+thisWidget.value = 1
+  }
+  thisWidget.input.value = thisWidget.value;
+}
+initCount(){
+  const thisWidget = this;
+  //thisWidget.input.addEventListener('change', thisWidget.setValue);
+ thisWidget.input.addEventListener('change', function() {
+  thisWidget.setValue(thisWidget.input.value);
+ })
+  thisWidget.linkDecrease.addEventListener('click', function(event){
+    event.preventDefault();
+    thisWidget.setValue(thisWidget.value -1);
+  })
+ thisWidget.linkIncrease.addEventListener('click', function(event){
+  event.preventDefault();
+  thisWidget.setValue(thisWidget.value +1);
+ })
+}
+}
 
 
   const app = {
@@ -199,6 +241,7 @@ class AmountWidget{
       thisData.data = dataSource;
       console.log(thisData.data)
     },
+
     initMenu: function(){
       const thisApp = this;
       console.log(thisApp.data)
@@ -208,6 +251,7 @@ class AmountWidget{
       console.log(thisApp.data.products[productData])
      }
     },
+    
     init: function(){
       const thisApp = this;
       console.log('*** App starting ***');
