@@ -51,6 +51,8 @@ const select = {
   const templates = {
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
+
+
 class Product {
   constructor(id, data){
     const thisProduct = this;
@@ -61,10 +63,12 @@ class Product {
     console.log(thisProduct)
     thisProduct.initAccordion();
     thisProduct.initOrderForm();
+    thisProduct.initAmountWidget();
     thisProduct.processOrder();
   }
+
   renderInMenu(){
-        const thisProduct = this;
+    const thisProduct = this;
     const genaratedHTML = templates.menuProduct(thisProduct.data)
     thisProduct.el = utils.createDOMFromHTML(genaratedHTML)
     console.log(genaratedHTML)
@@ -81,7 +85,15 @@ getElements(){
   thisProduct.cartButton = thisProduct.el.querySelector(select.menuProduct.cartButton);
   thisProduct.priceElem = thisProduct.el.querySelector(select.menuProduct.priceElem);
   thisProduct.imageWrapper = thisProduct.el.querySelector(select.menuProduct.imageWrapper)
+  thisProduct.amountWidgetEl = thisProduct.el.querySelector(select.menuProduct.amountWidget)
 }
+
+initAmountWidget(){
+ const thisProduct = this;
+ thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetEl)
+}
+
+
 
 initAccordion() {
   const thisProduct = this;
@@ -174,6 +186,15 @@ initAccordion() {
   }
 }
 
+class AmountWidget{
+  constructor(element){
+    const thisWidget = this;
+    console.log(thisWidget);
+    console.log(element)
+  }
+}
+
+
 
   const app = {
     initData: function(){
@@ -181,6 +202,7 @@ initAccordion() {
       thisData.data = dataSource;
       console.log(thisData.data)
     },
+
     initMenu: function(){
       const thisApp = this;
       console.log(thisApp.data)
@@ -190,6 +212,7 @@ initAccordion() {
       console.log(thisApp.data.products[productData])
      }
     },
+    
     init: function(){
       const thisApp = this;
       console.log('*** App starting ***');

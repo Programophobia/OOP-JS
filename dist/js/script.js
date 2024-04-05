@@ -61,6 +61,7 @@ class Product {
     console.log(thisProduct)
     thisProduct.initAccordion();
     thisProduct.initOrderForm();
+    thisProduct.initAmountWidget();
     thisProduct.processOrder();
   }
   renderInMenu(){
@@ -81,7 +82,15 @@ getElements(){
   thisProduct.cartButton = thisProduct.el.querySelector(select.menuProduct.cartButton);
   thisProduct.priceElem = thisProduct.el.querySelector(select.menuProduct.priceElem);
   thisProduct.imageWrapper = thisProduct.el.querySelector(select.menuProduct.imageWrapper)
+  thisProduct.amountWidgetEl = thisProduct.el.querySelector(select.menuProduct.amountWidget)
 }
+
+initAmountWidget(){
+ const thisProduct = this;
+ thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetEl)
+}
+
+
 
 initAccordion() {
   const thisProduct = this;
@@ -173,6 +182,15 @@ initAccordion() {
     });
   }
 }
+
+class AmountWidget{
+  constructor(element){
+    const thisWidget = this;
+    console.log(thisWidget);
+    console.log(element)
+  }
+}
+
 
 
   const app = {
