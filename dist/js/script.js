@@ -219,7 +219,6 @@ thisWidget.value = 1
 }
 initCount(){
   const thisWidget = this;
-  //thisWidget.input.addEventListener('change', thisWidget.setValue);
  thisWidget.input.addEventListener('change', function() {
   thisWidget.setValue(thisWidget.input.value);
  })
