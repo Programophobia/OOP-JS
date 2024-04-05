@@ -205,7 +205,11 @@ class AmountWidget{
     thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
   }
 
-
+announc(){
+  const thisWidget = this
+  const event = new Event ('redo')
+  thisWidget.element.dispatchEvent(event)
+}
   setValue(value){
     const thisWidget = this;
     const  newValue = parseInt(value)
