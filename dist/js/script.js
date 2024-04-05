@@ -91,6 +91,7 @@ getElements(){
 initAmountWidget(){
  const thisProduct = this;
  thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetEl)
+ thisProduct.amountWidgetEl.addEventListener('redo', function(){thisProduct.processOrder()})
 }
 
 
@@ -160,7 +161,7 @@ initAccordion() {
     
     }
   }
-
+price *= thisProduct.amountWidget.value;
   thisProduct.priceElem.innerHTML = price;
    }
 
@@ -210,17 +211,19 @@ announc(){
   const event = new Event ('redo')
   thisWidget.element.dispatchEvent(event)
 }
-  setValue(value){
-    const thisWidget = this;
-    const  newValue = parseInt(value)
-      if(thisWidget.value !== newValue && !isNaN(newValue)) {
+
+setValue(value){
+  const thisWidget = this;
+  const  newValue = parseInt(value)
+    if(thisWidget.value !== newValue && !isNaN(newValue)) {
         thisWidget.value = newValue;
-      }
-      if(newValue == isNaN || newValue > 9 || newValue < 0){
-      thisWidget.value = 1
-        }
-        thisWidget.input.value = thisWidget.value;
-      }
+    }
+    if(newValue == isNaN || newValue > 9 || newValue < 0){
+    thisWidget.value = 1
+    }
+    thisWidget.input.value = thisWidget.value;
+    thisWidget.announc()
+  }
 
 
   initCount(){
