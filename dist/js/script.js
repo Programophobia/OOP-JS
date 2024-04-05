@@ -205,31 +205,33 @@ class AmountWidget{
     thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
   }
 
+
   setValue(value){
-const thisWidget = this;
-const  newValue = parseInt(value)
-/* TODO: Add validation */
-if(thisWidget.value !== newValue && !isNaN(newValue)) {
-  thisWidget.value = newValue;
-}
-if(newValue == isNaN || newValue > 9){
-thisWidget.value = 1
-  }
-  thisWidget.input.value = thisWidget.value;
-}
-initCount(){
-  const thisWidget = this;
- thisWidget.input.addEventListener('change', function() {
-  thisWidget.setValue(thisWidget.input.value);
- })
-  thisWidget.linkDecrease.addEventListener('click', function(event){
-    event.preventDefault();
-    thisWidget.setValue(thisWidget.value -1);
-  })
- thisWidget.linkIncrease.addEventListener('click', function(event){
-  event.preventDefault();
-  thisWidget.setValue(thisWidget.value +1);
- })
+    const thisWidget = this;
+    const  newValue = parseInt(value)
+      if(thisWidget.value !== newValue && !isNaN(newValue)) {
+        thisWidget.value = newValue;
+      }
+      if(newValue == isNaN || newValue > 9 || newValue < 0){
+      thisWidget.value = 1
+        }
+        thisWidget.input.value = thisWidget.value;
+      }
+
+
+  initCount(){
+    const thisWidget = this;
+      thisWidget.input.addEventListener('change', function() {
+      thisWidget.setValue(thisWidget.input.value);
+    })
+    thisWidget.linkDecrease.addEventListener('click', function(event){
+      event.preventDefault();
+      thisWidget.setValue(thisWidget.value -1);
+        })
+    thisWidget.linkIncrease.addEventListener('click', function(event){
+      event.preventDefault();
+      thisWidget.setValue(thisWidget.value +1);
+    })
 }
 }
 
