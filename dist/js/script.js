@@ -6,7 +6,7 @@
   const select = {
     templateOf: {
       menuProduct: '#template-menu-product',
-      cartProduct: '#template-cart-product', // CODE ADDED
+      cartProduct: '#template-cart-product', 
     },
     containerOf: {
       menu: '#product-list',
@@ -27,12 +27,12 @@
     },
     widgets: {
       amount: {
-        input: 'input.amount', // CODE CHANGED
+        input: 'input.amount', 
         linkDecrease: 'a[href="#less"]',
         linkIncrease: 'a[href="#more"]',
       },
     },
-    // CODE ADDED START
+   
     cart: {
       productList: '.cart__order-summary',
       toggleTrigger: '.cart__summary',
@@ -51,7 +51,7 @@
       edit: '[href="#edit"]',
       remove: '[href="#remove"]',
     },
-    // CODE ADDED END
+   
   };
   
   const classNames = {
@@ -59,11 +59,11 @@
       wrapperActive: 'active',
       imageVisible: 'active',
     },
-    // CODE ADDED START
+  
     cart: {
       wrapperActive: 'active',
     },
-    // CODE ADDED END
+ 
   };
   
   const settings = {
@@ -71,19 +71,17 @@
       defaultValue: 1,
       defaultMin: 1,
       defaultMax: 9,
-    }, // CODE CHANGED
-    // CODE ADDED START
+    }, 
     cart: {
       defaultDeliveryFee: 20,
     },
-    // CODE ADDED END
+  
   };
   
   const templates = {
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
-    // CODE ADDED START
     cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),
-    // CODE ADDED END
+    
   };
 
 class Product {
@@ -123,8 +121,8 @@ getElements(){
 
 initAmountWidget(){
  const thisProduct = this;
- thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetEl)
- thisProduct.amountWidgetEl.addEventListener('redo', function(){thisProduct.processOrder()})
+ thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetEl);
+ thisProduct.amountWidgetEl.addEventListener('redo', function(){thisProduct.processOrder()});
 }
 
 
@@ -164,7 +162,8 @@ initAccordion() {
     for(let optionId in param.options) {
       const option = param.options[optionId];
       console.log(optionId, option);
-      const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+      const optionImage = thisProduct.imageWrapper.querySelector(`.${paramId}-${optionId}`);
+      //const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId); -- OPTIONAL
       const clickedElement = om[paramId] && om[paramId].includes(optionId);
       if (optionImage) {
         if (clickedElement) {
@@ -194,7 +193,7 @@ initAccordion() {
     
     }
   }
-price *= thisProduct.amountWidget.value;
+  price *= thisProduct.amountWidget.value;
   thisProduct.priceElem.innerHTML = price;
    }
 
@@ -222,16 +221,16 @@ price *= thisProduct.amountWidget.value;
 
 class AmountWidget{
   constructor(element){
-    const thisWidget = this;
-    thisWidget.getElements(element);
+  const thisWidget = this;
+  thisWidget.getElements(element);
     if (thisWidget.input.value === '' || thisWidget.input.value === undefined ) {
       thisWidget.setValue(settings.amountWidget.defaultValue)
   } else {
       thisWidget.setValue(thisWidget.input.value);
   }
-    thisWidget.initCount()
-    console.log(thisWidget);
-    console.log(element)
+  thisWidget.initCount()
+  console.log(thisWidget);
+  console.log(element)
   }
 
   getElements(element){
@@ -260,7 +259,7 @@ setValue(value){
     }
     thisWidget.input.value = thisWidget.value;
     thisWidget.announc()
-  }
+}
 
 
   initCount(){
@@ -279,24 +278,55 @@ setValue(value){
 }
 }
 
+class Koszyk{
+  constructor(element){
+    const thisKoszyk = this;
+    thisKoszyk.products = []
+    this.getElements(element)
+    console.log("kosz:", Koszyk)
+    thisKoszyk.initActions()
+      
+  }
+
+  getElements(element){
+   const thisKoszyk = this;
+   thisKoszyk.dom = {};
+   thisKoszyk.dom.wrapper = element;
+   thisKoszyk.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
+   console.log(thisKoszyk.dom.wrapper);
+  }
+
+  initActions(){
+    const thisKoszyk = this;
+    thisKoszyk.dom.toggleTrigger.addEventListener('click', function(){
+    thisKoszyk.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+   })
+  }
+}
+
 
   const app = {
     initData: function(){
       const thisData = this;
       thisData.data = dataSource;
-      console.log(thisData.data)
+      console.log(thisData.data);
     },
 
     initMenu: function(){
       const thisApp = this;
-      console.log(thisApp.data)
+      console.log(thisApp.data);
       
      for(let productData in thisApp.data.products){
-      new Product(productData, thisApp.data.products[productData])
-      console.log(thisApp.data.products[productData])
+      new Product(productData, thisApp.data.products[productData]);
+      console.log(thisApp.data.products[productData]);
      }
     },
-    
+    initCart: function(){
+      const thisApp = this;
+      const cartEl = document.querySelector(select.containerOf.cart);
+      thisApp.cart = new Koszyk(cartEl);
+     },
+   
     init: function(){
       const thisApp = this;
       console.log('*** App starting ***');
@@ -306,6 +336,7 @@ setValue(value){
       console.log('templates:', templates);
       app.initData();
       app.initMenu();
+      app.initCart();
       
     }
    
