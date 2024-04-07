@@ -185,10 +185,10 @@ initAccordion() {
    }
 
 
-   prepareCartProductParams() {
+  prepareCartProductParams() {
     const thisProduct = this;
     const formData = utils.serializeFormToObject(thisProduct.form);
-   const params = {};
+    const params = {};
 
     for(let paramId in thisProduct.data.params) {
       const param = thisProduct.data.params[paramId];
@@ -204,14 +204,13 @@ initAccordion() {
           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
 
           if(optionSelected){
-            params[paramId].options[optionId] =  option.label;
+            params[paramId].options[optionId] = option.label;
             console.log(option.label)
           }
+        }
+    }
+    return params;   
   }
-}
-    return params;
-    
-}
 
 
   prepareCartProduct(){
@@ -343,14 +342,11 @@ class Koszyk{
   }
 
   add(menuProduct){
-   const thisCart = this;
-   const generatedHTML = templates.cartProduct(menuProduct);
-      console.log(generatedHTML);
-      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-        thisCart.dom.productList.appendChild(generatedDOM);
-        console.log('adding product', menuProduct);
+    const thisCart = this;
+    const generatedHTML = templates.cartProduct(menuProduct);
+    const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+    thisCart.dom.productList.appendChild(generatedDOM);
   }
-
 }
 
 
@@ -370,6 +366,7 @@ class Koszyk{
       console.log(thisApp.data.products[productData]);
      }
     },
+
     initCart: function(){
       const thisApp = this;
       const cartEl = document.querySelector(select.containerOf.cart);
