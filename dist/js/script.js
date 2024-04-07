@@ -129,87 +129,104 @@ initAmountWidget(){
 
 initAccordion() {
   const thisProduct = this;
- 
-
   thisProduct.accordionTrigger.addEventListener('click', function(event) {
-
-   event.preventDefault();
-
-   const activeProduct = document.querySelector(select.all.menuProductsActive)
-
+  event.preventDefault();
+  const activeProduct = document.querySelector(select.all.menuProductsActive)
     if (activeProduct !== null && activeProduct !== thisProduct.el) {
-
       activeProduct.classList.remove(classNames.menuProduct.wrapperActive); 
     }
 
-
   thisProduct.el.classList.toggle(classNames.menuProduct.wrapperActive); 
   });
-  }
+}
 
   processOrder(){
     const thisProduct = this;
     console.log(this.processOrder)
     const om = utils.serializeFormToObject(thisProduct.form)
     console.log(om)
-  let price = thisProduct.data.price;
+    let price = thisProduct.data.price;
 
-  for(let paramId in thisProduct.data.params) {
-    const param = thisProduct.data.params[paramId];
-    console.log(paramId, param);
+    for(let paramId in thisProduct.data.params) {
+      const param = thisProduct.data.params[paramId];
+      console.log(paramId, param);
 
-  
-    for(let optionId in param.options) {
-      const option = param.options[optionId];
-      console.log(optionId, option);
-      const optionImage = thisProduct.imageWrapper.querySelector(`.${paramId}-${optionId}`);
-      //const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId); -- OPTIONAL
-      const clickedElement = om[paramId] && om[paramId].includes(optionId);
-      if (optionImage) {
-        if (clickedElement) {
-           optionImage.classList.add(classNames.menuProduct.imageVisible);
-         }
-         else {
-           optionImage.classList.remove(classNames.menuProduct.imageVisible);
-         }
-       }
-   
-      if(clickedElement && option.default !== true) {
-     
-       
-        price = price + option.price
-      }
-        else if((option.default == true) && !(om[paramId] && om[paramId].includes(optionId))) {
-          price = price - option.price;
+      for(let optionId in param.options) {
+        const option = param.options[optionId];
+        const optionImage = thisProduct.imageWrapper.querySelector(`.${paramId}-${optionId}`);
+        //const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId); -- OPTIONAL
+        const clickedElement = om[paramId] && om[paramId].includes(optionId);
+        if (optionImage) {
+          if (clickedElement) {
+            optionImage.classList.add(classNames.menuProduct.imageVisible);
+          }
+          else {
+            optionImage.classList.remove(classNames.menuProduct.imageVisible);
+          }
+        }
+    
+        if(clickedElement && option.default !== true) {
+          price = price + option.price
+        }
+          else if((option.default == true) && !(om[paramId] && om[paramId].includes(optionId))) {
+            price = price - option.price;
+            }
+          else {
+          if(option.default == true) {
+            price == price 
 
           }
-         else {
-    
-        if(option.default == true) {
-          price == price 
-
         }
       }
-    
-    }
   }
-  price *= thisProduct.amountWidget.value;
-  thisProduct.priceSingle = price;
-  thisProduct.priceElem.innerHTML = price;
+      price *= thisProduct.amountWidget.value;
+      thisProduct.priceSingle = price;
+      thisProduct.priceElem.innerHTML = price;
    }
 
-   prepareCartProduct(){
+
+   prepareCartProductParams() {
     const thisProduct = this;
-   const productSummary = {
+    const formData = utils.serializeFormToObject(thisProduct.form);
+   const params = {};
+
+    for(let paramId in thisProduct.data.params) {
+      const param = thisProduct.data.params[paramId];
+      console.log(paramId, param);
+
+      params[paramId] = {
+        label: param.label,
+        options: {}
+      }
+        for(let optionId in param.options) {
+
+          const option = param.options[optionId];
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+
+          if(optionSelected){
+            params[paramId].options[optionId] =  option.label;
+            console.log(option.label)
+          }
+  }
+}
+    return params;
+    
+}
+
+
+  prepareCartProduct(){
+    const thisProduct = this;
+    const productSummary = {
     id: thisProduct.id,
     name: thisProduct.id,
     amount: thisProduct.amountWidget.value, 
-    priceSingle: thisProduct.priceSingle,
-    price: thisProduct.priceSingle * thisProduct.amountWidget.value,
-    params: {},
+    priceSingle: thisProduct.priceSingle / thisProduct.amountWidget.value ,
+    price: thisProduct.priceSingle,
+    params: thisProduct.prepareCartProductParams(),
    }
-return productSummary;
+   return productSummary
   }
+
 
 
   initOrderForm(){
@@ -237,7 +254,9 @@ return productSummary;
     const thisProduct = this;
     app.cart.add(thisProduct.prepareCartProduct())
   }
+
 }
+
 
 class AmountWidget{
   constructor(element){
@@ -313,7 +332,7 @@ class Koszyk{
    thisKoszyk.dom = {};
    thisKoszyk.dom.wrapper = element;
    thisKoszyk.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
-   console.log(thisKoszyk.dom.wrapper);
+   thisKoszyk.dom.productList = element.querySelector(select.cart.productList);
   }
  
   initActions(){
@@ -322,9 +341,14 @@ class Koszyk{
     thisKoszyk.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
    })
   }
+
   add(menuProduct){
    const thisCart = this;
-   console.log(thisCart, menuProduct)
+   const generatedHTML = templates.cartProduct(menuProduct);
+      console.log(generatedHTML);
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+        thisCart.dom.productList.appendChild(generatedDOM);
+        console.log('adding product', menuProduct);
   }
 
 }
