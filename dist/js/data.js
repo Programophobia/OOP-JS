@@ -113,3 +113,5 @@ dataSource.products = {
   },
 
 };
+
+export default dataSource
