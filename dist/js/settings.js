@@ -39,6 +39,7 @@ export const select = {
         input: 'input[type="range"]',
         output: '.output',
     },
+  },
     booking: {
         peopleAmount: '.people-amount',
         hoursAmount: '.hours-amount',
@@ -47,7 +48,7 @@ export const select = {
     nav: {
         links: '.main-nav a',
     },
-    },
+   
    
     cart: {
       productList: '.cart__order-summary',
