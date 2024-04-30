@@ -17,16 +17,13 @@ class Booking {
         thisBooking.dom.wrapper.innerHTML  = genaratedHTML;
         thisBooking.dom.peopleAmount = document.querySelector(select.booking.peopleAmount)
         thisBooking.dom.hoursAmount = document.querySelector(select.booking.hoursAmount)
-      //  thisProduct.el = utils.createDOMFromHTML(genaratedHTML)
-     //   console.log(genaratedHTML)
-     //   const mContainer = document.querySelector(select.containerOf.menu)
-      //  mContainer.appendChild(thisProduct.el) 
-}
-initWidget(){
-    const thisBooking = this;
-   thisBooking.peopleAmountWidget = new AmountWidget(thisBooking.dom.peopleAmount)
-   thisBooking.hoursAmountWidget =  new AmountWidget(thisBooking.dom.hoursAmount)
+    
+    }
+    initWidget(){
+        const thisBooking = this;
+        thisBooking.peopleAmountWidget = new AmountWidget(thisBooking.dom.peopleAmount)
+        thisBooking.hoursAmountWidget =  new AmountWidget(thisBooking.dom.hoursAmount)
 
-}
+    }
 }
 export default Booking

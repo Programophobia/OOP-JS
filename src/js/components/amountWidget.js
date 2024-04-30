@@ -1,18 +1,21 @@
 import { settings, select } from "../settings.js";
+import BaseWidget from "./baseWidget.js";
 
-
-class AmountWidget{
+class AmountWidget extends BaseWidget{
     constructor(element){
+      super(element, settings.amountWidget.defaultValue)
     const thisWidget = this;
+
+
     thisWidget.getElements(element);
       if (thisWidget.input.value === '' || thisWidget.input.value === undefined ) {
         thisWidget.setValue(settings.amountWidget.defaultValue)
     } else {
         thisWidget.setValue(thisWidget.input.value);
     }
+
     thisWidget.initCount()
-    console.log(thisWidget);
-    console.log(element)
+   
     }
   
     getElements(element){
