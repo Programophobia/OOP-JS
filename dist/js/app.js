@@ -1,4 +1,4 @@
-import { select, classNames, settings, templates } from "./settings.js";
+import { select} from "./settings.js";
 import Product  from './components/product.js';
 import Koszyk from'./components/cart.js'
 import dataSource from "./data.js";
@@ -30,7 +30,9 @@ import dataSource from "./data.js";
       })
      },
    initPages: function(){
+    const thisApp = this;
 
+    thisApp.pages = document.querySelector(select.containerOf.pages)
    },
 
 
