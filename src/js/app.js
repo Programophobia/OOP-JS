@@ -2,6 +2,7 @@ import { classNames, select} from "./settings.js";
 import Product  from './components/product.js';
 import Koszyk from'./components/cart.js'
 import dataSource from "./data.js";
+import Booking from "./components/booking.js";
 
   const app = {
     initData: function(){
@@ -71,15 +72,20 @@ import dataSource from "./data.js";
       })
      },
 
+     initBooking: function(){
+      const thisApp = this;
+      const bookingContainer = document.querySelector(select.containerOf.booking);
+      thisApp.booking = new Booking(bookingContainer);
 
-
+    },
 
     init: function(){
       const thisApp = this;
-      app.initData();
-      app.initMenu();
-      app.initCart();
-      app.initPages();
+      thisApp.initData();
+      thisApp.initMenu();
+      thisApp.initCart();
+      thisApp.initPages();
+      thisApp.initBooking()
       
     }
    
